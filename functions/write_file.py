@@ -1,5 +1,6 @@
 import os, config
 from pathlib import Path
+from google.genai import types
 
 def write_file(working_directory, file_path, content):
     #print(file_path)
@@ -26,3 +27,27 @@ def write_file(working_directory, file_path, content):
         )
     except Exception as e:
         return f"Error: writing to file: {e}"
+    
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Write or overwrite a file’s contents within the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "working_directory": types.Schema(
+                type=types.Type.STRING,
+                description="Directory to run the command from."
+            ),
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Path to the file where contents need to be written, relative to the working directory."
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="Content to write to the file."
+            ),
+        },
+        required=["working_directory","file_path","content"]
+    ),
+)
